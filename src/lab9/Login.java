@@ -5,16 +5,19 @@
 package lab9;
 
 import Backend.*;
+import java.awt.HeadlessException;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author HP
  */
 public class Login extends javax.swing.JFrame {
-   
+
     AccountManagement am;
+
     public Login(AccountManagement am) {
-         initComponents();
+        initComponents();
         setLocationRelativeTo(null);
         setTitle("Login Page");
         this.am = am;
@@ -90,19 +93,32 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginActionPerformed
-            String name = username.getText();
-            String pass=password.getText();
-            User u = am.searchUser(name, pass);
-            //TODO newsfeed
-            
+        try {
 
+            String id = username.getText();
+            String pass = new String(password.getPassword());
+            if (id.equals("") || pass.equals("")) {
+                JOptionPane.showMessageDialog(this, "Please fill all empty fields");
+                return;
+            }
+            {
+                User u = am.searchUser(id, pass);
 
+                if (u != null) {
+                    JOptionPane.showMessageDialog(this, "Login successful! Welcome, " + u.getUserID());
+                } else {
+                    JOptionPane.showMessageDialog(this, "Incorrect username or password");
+                }
+            }
+        } catch (HeadlessException ex) {
+            JOptionPane.showMessageDialog(this, "Please fill all empty fields");
 
+        }
 
         // TODO add your handling code here:
     }//GEN-LAST:event_LoginActionPerformed
 
-   
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Login;
     private javax.swing.JLabel jLabel1;
